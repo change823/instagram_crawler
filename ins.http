@@ -1,0 +1,77 @@
+小程序
+gh_bc086d0d01cf zhangwc1993@163.com 可登录但无法使用
+gh_f81ec52b9c73 3472769684@qq.com 已冻结
+gh_743b6029ca6a zhangwc.ran1993@gmail.com 满岛萌 17602196125
+
+公众号
+gh_3586d783e2cc 3528308129@qq.com 已注销
+gh_ba2b7d8f5015 2413633716@qq.com 满岛萌 17602196125
+gh_9fa61ee8d5a7 3511168386@qq.com 已冻结 17602196125
+
+云开发
+环境名称：hikari
+环境ID：hikari-exn7n
+
+需求todolist
+微信公众号 发送链接 返回图片
+微信小程序 输入链接 返回图片
+
+公众号申请
+小程序申请
+
+发送链接 返回图片 功能实现
+小程序前端页面搭建
+google cloud部署
+
+小程序前端开发
+小程序后端开发
+PC管理后台
+收钱功能企业资质，需注册公司
+
+注册小程序
+注册域名
+购买服务器
+服务器环境安装
+
+###
+curl 'https://www.instagram.com/graphql/query/?query_hash=7223fb3539e10cad7900c019401669e7&variables=%7B%22only_stories%22%3Atrue%2C%22stories_prefetch%22%3Afalse%2C%22stories_video_dash_manifest%22%3Afalse%7D' \
+  -H 'authority: www.instagram.com' \
+  -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36' \
+  -H 'accept: */*' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'sec-fetch-mode: cors' \
+  -H 'sec-fetch-dest: empty' \
+  -H 'referer: https://www.instagram.com/' \
+  -H 'accept-language: zh-CN,zh;q=0.9' \
+  -H 'cookie: ig_did=57ABBED0-CAA3-4D0C-A7F6-EB57CD0BAA72; mid=XvMi7QAEAAG76kCJAwavAxdX56l4; fbm_124024574287414=base_domain=.instagram.com; csrftoken=jCZ7idsf8yTPZuZELA1dUa0xgQF00sdR; ds_user_id=3602874642; sessionid=3602874642%3AampqMh97bmiE6E%3A29; shbid=15506; shbts=1598520402.4904773; rur=VLL; urlgen="{\"35.236.132.111\": 15169}:1kBZwc:jtBaFKo-I96omKsCbITDklKlEuU"' \
+  --compressed
+
+
+用户名：
+
+hikarimitsushima
+
+hikari.yida
+
+
+### questions
+目前只返回封面图，即第一张
+修改保存图片的位置
+
+
+  alias vs='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
+  alias gcssh="ssh -i ~/.ssh/google_cloud zhangwc_ran1993@35.236.132.111"
+
+  # where need proxy
+  proxy () {
+    export http_proxy="http://127.0.0.1:8001"
+    export https_proxy="http://127.0.0.1:8001"
+    echo "Socks Proxy on"
+  }
+
+  # where need noproxy
+  noproxy () {
+    unset http_proxy
+    unset https_proxy
+    echo "Socks Proxy off"
+  }
