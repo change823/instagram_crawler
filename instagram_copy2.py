@@ -79,6 +79,7 @@ def download(url, i):
         print(e)
         print('第{0}条资源下载失败\n'.format(i + 1))
 
+
 def get_url_from_edge(edge):
     if edge['node']['is_video']:
         video_url = edge['node']['video_url']
@@ -88,6 +89,22 @@ def get_url_from_edge(edge):
     else:
         display_url = edge['node']['display_url']
         return display_url
+
+
+def get_url_from_edge_multi(edge, i, urls):
+    if "edge_sidecar_to_children" in edge["node"]:
+        edge_sidecar_to_children = edge["node"][
+            "edge_sidecar_to_children"]
+        print('----第{0}条帖子资源数{1}------'.format(
+            i + 1, len(edge_sidecar_to_children["edges"])))
+        for edge_children in edge_sidecar_to_children["edges"]:
+            if edge_children['node']['display_url']:
+                source_url = get_url_from_edge(edge_children)
+                urls.append(source_url)
+    else:
+        print('----第{0}条帖子资源数{1}------'.format(i + 1, 1))
+        source_url = get_url_from_edge(edge)
+        urls.append(source_url)
 
 def get_urls(html):
     urls = []
@@ -109,43 +126,24 @@ def get_urls(html):
             flag = page_info['has_next_page']
             for i in range(len(edges)):
                 edge = edges[i]
-                if "edge_sidecar_to_children" in edge["node"]:
-                    edge_sidecar_to_children = edge["node"][
-                        "edge_sidecar_to_children"]
-                    print('----第{0}条帖子资源数{1}------'.format(
-                        i + 1, len(edge_sidecar_to_children["edges"])))
-                    for edge_children in edge_sidecar_to_children["edges"]:
-                        if edge_children['node']['display_url']:
-                            source_url = get_url_from_edge(edge_children)
-                            urls.append(source_url)
-                else:
-                    print('----第{0}条帖子资源数{1}------'.format(i + 1, 1))
-                    source_url = get_url_from_edge(edge)
-                    urls.append(source_url)
-            # print(cursor, flag)
+                get_url_from_edge_multi(edge, i, urls)
+            print(cursor, flag)
     while flag:
         url = uri.format(user_id=user_id, cursor=cursor)
         js_data = get_json(url)
         infos = js_data['data']['user']['edge_owner_to_timeline_media'][
             'edges']
+        print('======帖子数{0}======\n '.format(len(infos)))
         cursor = js_data['data']['user']['edge_owner_to_timeline_media'][
             'page_info']['end_cursor']
         flag = js_data['data']['user']['edge_owner_to_timeline_media'][
             'page_info']['has_next_page']
-        for info in infos:
-            if info['node']['is_video']:
-                video_url = info['node']['video_url']
-                if video_url:
-                    print(video_url)
-                    urls.append(video_url)
-            else:
-                if info['node']['display_url']:
-                    display_url = info['node']['display_url']
-                    print(display_url)
-                    urls.append(display_url)
-        # print(cursor, flag)
+        for j in range(len(infos)):
+            info = infos[j]
+            get_url_from_edge_multi(info, j, urls)
+        print(cursor, flag)
         # time.sleep(4 + float(random.randint(1, 800))/200)    # if count > 2000, turn on
-    print('\n======总资源数{0}======\n '.format(len(urls)))    
+    print('\n======总资源数{0}======\n '.format(len(urls)))
     return urls
 
 
@@ -159,7 +157,7 @@ def main(user):
     for i in range(len(urls)):
         print('------>>>正在下载第{0}条资源： '.format(i + 1) + urls[i],
               ' 还剩{0}条'.format(len(urls) - i - 1), '\n')
-        download(urls[i], i)
+        # download(urls[i], i)
 
 
 if __name__ == '__main__':
