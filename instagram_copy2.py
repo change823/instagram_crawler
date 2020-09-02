@@ -70,7 +70,7 @@ def download(url, i):
             md5(content).hexdigest(), endw)
         if not os.path.exists(file_path):
             with open(file_path, 'wb') as f:
-                print('第{0}条资源下载完成\n'.format(i + 1))
+                print(f'第{i + 1}条资源下载完成\n')
                 f.write(content)
                 f.close()
         else:
@@ -151,13 +151,14 @@ def main(user):
     url = url_base + user + '/'
     html = get_html(url)
     urls = get_urls(html)
-    dirpath = '/Users/yida/Crawler/result/{0}'.format(user)
+    dirpath = f'/Users/yida/Crawler/result/{user}'
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
     for i in range(len(urls)):
         print('------>>>正在下载第{0}条资源： '.format(i + 1) + urls[i],
               ' 还剩{0}条'.format(len(urls) - i - 1), '\n')
-        # download(urls[i], i)
+        download(urls[i], i)
+        time.sleep(0.1)
 
 
 if __name__ == '__main__':

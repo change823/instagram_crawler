@@ -81,5 +81,10 @@ hikarifan_1130 --29帖子
   }
 
   
+Host github
+    HostName github.com
+    IdentityFile ~/.ssh/github
 
-  
+Host gitlab
+    HostName gitlab.alibaba-inc.com
+    IdentityFile ~/.ssh/id_rsa  
