@@ -84,7 +84,6 @@ def get_url_from_edge(edge):
     if edge['node']['is_video']:
         video_url = edge['node']['video_url']
         if video_url:
-            # print(video_url)
             return video_url
     else:
         display_url = edge['node']['display_url']
@@ -118,8 +117,6 @@ def get_urls(html):
             edges = js_data["entry_data"]["ProfilePage"][0]["graphql"]["user"][
                 "edge_owner_to_timeline_media"]["edges"]
             print('======帖子数{0}======\n '.format(len(edges)))
-            # edges_json = json.dumps(edges)
-            # print('edges_json------: ' + edges_json)
             page_info = js_data["entry_data"]["ProfilePage"][0]["graphql"][
                 "user"]["edge_owner_to_timeline_media"]['page_info']
             cursor = page_info['end_cursor']
