@@ -66,7 +66,7 @@ def download(url, i):
         content = get_content(url)
         endw = 'mp4' if r'mp4?_nc_ht' in url else 'jpg'
         file_path = '/Users/yida/Crawler/result/{0}/{1}.{2}'.format(
-            user_name,
+            'by_url',
             md5(content).hexdigest(), endw)
         if not os.path.exists(file_path):
             with open(file_path, 'wb') as f:
@@ -125,12 +125,10 @@ def get_urls(html):
     return urls
 
 
-def main(user):
-    # url = url_base + user + '/'
-    html = get_html(
-        'https://www.instagram.com/p/BjtAXjWHAQr/?igshid=1vob1y2y3jklo')
+def main(url):
+    html = get_html(url)
     urls = get_urls(html)
-    dirpath = f'/Users/yida/Crawler/result/{user}'
+    dirpath = f'/Users/yida/Crawler/result/by_url'
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
     for i in range(len(urls)):
@@ -141,9 +139,11 @@ def main(user):
 
 
 if __name__ == '__main__':
-    user_name = sys.argv[1]
+    url = sys.argv[1]
+    if not url.endswith('/'):
+        url = url + '/'
     start = time.time()
-    main(user_name)
+    main(url)
     print('Complete!!!!!!!!!!')
     end = time.time()
     spend = end - start
