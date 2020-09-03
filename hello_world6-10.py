@@ -197,15 +197,79 @@ confirmed_users = []
 
 ages = {}
 
-flag = True
-while flag:
-    name = input('\nEnter your name: ')
-    age = input('\nEnter your age: ')
-    ages[name] = int(age)
+# flag = True
+# while flag:
+#     name = input('\nEnter your name: ')
+#     age = input('\nEnter your age: ')
+#     ages[name] = int(age)
 
-    repeat = input('Have others? (yes or no)')
-    if repeat == 'no':
-        flag = False
+#     repeat = input('Have others? (yes or no)')
+#     if repeat == 'no':
+#         flag = False
 
-for name, age in ages.items():
-    print(name.title() + "'age is " + str(age))
+# for name, age in ages.items():
+#     print(name.title() + "'age is " + str(age))
+
+# def greet_user(user_name):
+#     """显示简单的问候语"""
+#     print('Hello, ' + user_name.title() + '!')
+
+# greet_user('tom')
+
+# def des_pet(pet_type, pet_name):
+#     '''显示宠物的信息'''
+#     print('\nI have a ' + pet_type + '.')
+#     print('My ' + pet_type + "'s name is " + pet_name.title())
+
+# des_pet('mouse', 'jerry')
+# des_pet(pet_name='tom', pet_type='cat')
+
+# def desc_pet(pet_name, pet_type='dog'):
+#     print('\nI have a ' + pet_type + '.')
+#     print('My ' + pet_type + "'s name is " + pet_name.title())
+
+# desc_pet('hah')
+# desc_pet('haha', pet_type='cat')
+
+# def get_full_name(first, last, middle=''):
+#     if middle:
+#         full_name = first + ' ' + middle + ' ' + last
+#     else:
+#         full_name = first + ' ' + last
+
+#     return full_name.title()
+
+# print(get_full_name('jimi', 'hendrix'))
+# print(get_full_name('john', 'hooker', 'lee'))
+
+# def build_person(first, last, age=''):
+#     person = {
+#         'first': first,
+#         'last': last,
+#     }
+#     if age:
+#         person['age'] = age
+#     return person
+
+# musician = build_person('jimi', 'hendrix', age=12)
+# print(musician)
+
+
+def get_full_name(first, last):
+    full_name = first + ' ' + last
+    return full_name.title()
+
+
+while True:
+    print('\nEnter your name:')
+    print("(Enter 'q' to exit.)")
+
+    f = input('First: ')
+    if f == 'q':
+        break
+    l = input('Last: ')
+    if l == 'q':
+        break
+
+    full_name = get_full_name(f, l)
+    print('Hello, ' + full_name + '!')
