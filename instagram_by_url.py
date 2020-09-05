@@ -15,7 +15,7 @@ headers = {
     'user-agent':
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
     'cookie':
-    'ig_did=57ABBED0-CAA3-4D0C-A7F6-EB57CD0BAA72; mid=XvMi7QAEAAG76kCJAwavAxdX56l4; fbm_124024574287414=base_domain=.instagram.com; csrftoken=jCZ7idsf8yTPZuZELA1dUa0xgQF00sdR; ds_user_id=3602874642; sessionid=3602874642%3AampqMh97bmiE6E%3A29; shbid=15506; shbts=1598520402.4904773; rur=VLL; urlgen="{\"35.236.132.111\": 15169}:1kBZwc:jtBaFKo-I96omKsCbITDklKlEuU"',
+    'mid=W-ucPAAEAAHfHL6krlN9h6rAeAcZ; mcd=3; ig_did=C9B84CE5-C181-4D4C-B8BC-0D5919452C1E; shbid=15506; shbts=1599292902.46192; rur=VLL; csrftoken=IGP4k5Q1zCqYZHBAxTgs9e7HPhHRzLIr; ds_user_id=41324821423; sessionid=41324821423%3AEpEY7WYAYFlQso%3A6; urlgen="{\"58.153.26.120\": 4760}:1kETVz:QvuyyX7buFvZrnDhc5OpKWO6B-M"',
     'Connection': 'close'
 }
 
@@ -65,7 +65,7 @@ def download(url, i):
     try:
         content = get_content(url)
         endw = 'mp4' if r'mp4?_nc_ht' in url else 'jpg'
-        file_path = '/Users/yida/Crawler/result/{0}/{1}.{2}'.format(
+        file_path = '/Users/yida/python/result/{0}/{1}.{2}'.format(
             'by_url',
             md5(content).hexdigest(), endw)
         if not os.path.exists(file_path):
@@ -79,6 +79,15 @@ def download(url, i):
         print(e)
         print('第{0}条资源下载失败\n'.format(i + 1))
 
+
+def get_url_from_shortcode_media(shortcode_media):
+    if shortcode_media['is_video']:
+        video_url = shortcode_media['video_url']
+        if video_url:
+            return video_url
+    else:
+        display_url = shortcode_media['display_url']
+        return display_url
 
 def get_url_from_edge(edge):
     if edge['node']['is_video']:
@@ -112,14 +121,17 @@ def get_urls(html):
     for item in items:
         if item.text().strip().startswith('window.__additionalDataLoaded'):
             js_data = json.loads(item.text()[48:-2], encoding='utf-8')
-            print(f'js_data------: {json.dumps(js_data)}')
-            edges = js_data["graphql"]["shortcode_media"][
-                "edge_sidecar_to_children"]["edges"]
-            print('======帖子数{0}======\n '.format(len(edges)))
-
-            for i in range(len(edges)):
-                edge = edges[i]
-                get_url_from_edge_multi(edge, i, urls)
+            # print(f'js_data------: {json.dumps(js_data)}')
+            if "edge_sidecar_to_children" in js_data["graphql"]["shortcode_media"]:
+                edges = js_data["graphql"]["shortcode_media"][
+                    "edge_sidecar_to_children"]["edges"]
+                for edge_children in edges:
+                    if edge_children['node']['display_url']:
+                        source_url = get_url_from_edge(edge_children)
+                        urls.append(source_url)
+            else:
+                source_url = get_url_from_shortcode_media(js_data["graphql"]["shortcode_media"])
+                urls.append(source_url)
 
     print('\n======总资源数{0}======\n '.format(len(urls)))
     return urls
@@ -128,7 +140,7 @@ def get_urls(html):
 def main(url):
     html = get_html(url)
     urls = get_urls(html)
-    dirpath = f'/Users/yida/Crawler/result/by_url'
+    dirpath = f'/Users/yida/python/result/by_url'
     if not os.path.exists(dirpath):
         os.mkdir(dirpath)
     for i in range(len(urls)):
