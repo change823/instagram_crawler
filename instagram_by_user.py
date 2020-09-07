@@ -19,12 +19,16 @@ headers = {
     'Connection': 'close'
 }
 
+proxy = {
+    "http": "3.211.17.212:80",
+}
+
 requests.adapters.DEFAULT_RETRIES = 5  # 增加重连次数
 
 
 def get_html(url):
     try:
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, proxies=proxy)
         if response.status_code == 200:
             return response.text
         else:
@@ -36,7 +40,10 @@ def get_html(url):
 
 def get_json(url):
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url,
+                                headers=headers,
+                                timeout=10,
+                                proxies=proxy)
         if response.status_code == 200:
             return response.json()
         else:
@@ -92,8 +99,7 @@ def get_url_from_edge(edge):
 
 def get_url_from_edge_multi(edge, i, urls):
     if "edge_sidecar_to_children" in edge["node"]:
-        edge_sidecar_to_children = edge["node"][
-            "edge_sidecar_to_children"]
+        edge_sidecar_to_children = edge["node"]["edge_sidecar_to_children"]
         print('----第{0}条帖子资源数{1}------'.format(
             i + 1, len(edge_sidecar_to_children["edges"])))
         for edge_children in edge_sidecar_to_children["edges"]:
@@ -104,6 +110,7 @@ def get_url_from_edge_multi(edge, i, urls):
         print('----第{0}条帖子资源数{1}------'.format(i + 1, 1))
         source_url = get_url_from_edge(edge)
         urls.append(source_url)
+
 
 def get_urls(html):
     urls = []

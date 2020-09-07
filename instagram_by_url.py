@@ -19,12 +19,17 @@ headers = {
     'Connection': 'close'
 }
 
+proxy = {
+    "https": "159.8.114.37:80",
+}
+
 requests.adapters.DEFAULT_RETRIES = 5  # 增加重连次数
 
 
 def get_html(url):
     try:
-        response = requests.get(url, headers=headers)
+        print(proxy)
+        response = requests.get(url, headers=headers, proxies = proxy)
         if response.status_code == 200:
             return response.text
         else:
